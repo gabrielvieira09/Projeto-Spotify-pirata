@@ -10,6 +10,9 @@ export default function Home({navigation}) {
     title: "Higtway to hell",
     group: "AC/DC",
     album_image: "https://upload.wikimedia.org/wikipedia/pt/a/ac/Acdc_Highway_to_Hell.JPG",
+    album: "Hightway to Hell",
+    year: 1970,
+    genre: "Heavy Metal",
   }
   return (
     <View style={styles.constainer}>
