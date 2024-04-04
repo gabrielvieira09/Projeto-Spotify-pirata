@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Home from "./screens/Home";
 import MusicDetails from "./screens/MusicDetails";
 import Search from "./screens/Search";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
