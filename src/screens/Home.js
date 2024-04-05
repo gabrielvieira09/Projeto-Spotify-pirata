@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, StatusBar, FlatList } from "react-native";
 import MusicItem from "../components/MusicItem";
 
 export default function Home({navigation}) {
   const [currentPlaying, setCurrentPlaying] = useState(null);
+  const [musicData, SetMusicData] = useState([]);
   const item = {
     id: 1,
     title: "Higtway to hell",
@@ -13,12 +14,21 @@ export default function Home({navigation}) {
     album: "Hightway to Hell",
     year: 1970,
     genre: "Heavy Metal",
-  }
+  };
+
+  useEffect(() => {
+    fetch("http://10.0.2.2:3000/musics").then((response)=>response.json())
+    .then((data => SetMusicData(data)))
+  },[])
   return (
     <View style={styles.constainer}>
       <StatusBar barStyle="light-content" backgroundColor="#121212"/>
       <Text style={styles.title}>Minhas Músicas</Text>
+      <FlatList data={musicData} keyExtractor={(item) => item.id.toString()}
+      renderItem={({item}) => (
       <MusicItem isPlaying={() => currentPlaying == item.id} music={item} navigation={navigation} onPlayPause={() => {}}/>
+      )}
+      />
     </View>
   );
 }
