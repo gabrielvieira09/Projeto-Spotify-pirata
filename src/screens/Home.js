@@ -1,11 +1,33 @@
 
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, StatusBar, FlatList } from "react-native";
+import { Audio } from "expo-av";
 import MusicItem from "../components/MusicItem";
 
 export default function Home({navigation}) {
-  const [currentPlaying, setCurrentPlaying] = useState(null);
   const [musicData, SetMusicData] = useState([]);
+  const [currentPlaying, setCurrentPlaying] = useState(null);
+  const [currentSound, setCurrentSound] = useState(null)
+
+  const togglePlayPause = async (item) => {
+    if (currentSound && currentPlaying == item.id) {
+
+      await currentSound.pauseAsync();
+      setCurrentPlaying(null);
+      setCurrentSound(null);
+    } else {
+      if (currentSound) {
+        await currentSound.unloadAsync();
+      }
+      const {sound} = await Audio.Sound.createAsync(
+        {uri:`http://10.0.2.2:3000/musics/${item.music_path}`},
+        {shouldPlay: true}
+      );
+      setCurrentSound(sound);
+      setCurrentPlaying(item.id);
+    }
+  }
+
   const item = {
     id: 1,
     title: "Higtway to hell",
@@ -26,7 +48,8 @@ export default function Home({navigation}) {
       <Text style={styles.title}>Minhas Músicas</Text>
       <FlatList data={musicData} keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
-      <MusicItem isPlaying={() => currentPlaying == item.id} music={item} navigation={navigation} onPlayPause={() => {}}/>
+      <MusicItem isPlaying={currentPlaying === item.id} music={item} navigation={navigation}
+      onPlayPause={() => togglePlayPause(item)}/>
       )}
       />
     </View>
